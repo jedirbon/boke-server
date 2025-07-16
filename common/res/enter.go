@@ -8,6 +8,7 @@ const (
 	SuccessCode     Code = 200
 	FailValidCode   Code = 400
 	FailServiceCode Code = 500
+	TokenExpire     Code = 401
 )
 
 type Response struct {
@@ -71,6 +72,13 @@ func FailedAny(data any, msg string, c *gin.Context) {
 func FailedMsg(msg string, c *gin.Context) {
 	Response{
 		Code: FailValidCode,
+		Data: empty,
+		Msg:  msg,
+	}.JSON(c)
+}
+func ExpireMsg(msg string, c *gin.Context) {
+	Response{
+		Code: TokenExpire,
 		Data: empty,
 		Msg:  msg,
 	}.JSON(c)

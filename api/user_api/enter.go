@@ -87,15 +87,19 @@ func (UserApi) Login(c *gin.Context) {
 	}
 }
 
+// 修改用户信息
 func (UserApi) UploadUser(c *gin.Context) {
 	var userInfo models.UserModel
 	err := c.ShouldBind(&userInfo)
 	if err != nil {
-		res.FailedMsg("参数错误", c)
+		res.FailedMsg(err.Error(), c)
 		return
 	}
-	result := global.DB.Model(&models.UserModel{}).Take(userInfo)
-	if result.RowsAffected > 0 {
-
+	result := global.DB.Model(&userInfo).Updates(userInfo)
+	if result.RowsAffected > 0 && result.Error == nil {
+		res.OkAny(userInfo, "更新成功", c)
+		return
+	} else {
+		res.FailedMsg(err.Error(), c)
 	}
 }

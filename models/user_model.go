@@ -9,7 +9,7 @@ type UserModel struct {
 	Abstract       string `gorm:"size:256" json:"abstract" form:"abstract"`
 	RegisterSource string `json:"registerSource" form:"registerSource"` //注册来源
 	CodeAge        int    `json:"codeAge" form:"codeAge"`               //马岭
-	Password       string `gorm:"size:64" json:"-" binding:"required" form:"password"`
+	Password       string `gorm:"size:64" json:"-" form:"password"`
 	Email          string `gorm:"size:256" json:"email" form:"email"`
 	OpenID         string `gorm:"size:64" json:"openID" form:"openID"` //第三方登录的唯一ID
 	RoleId         int    `json:"roleId" form:"roleId"`                //1管理员 2用户 3访客

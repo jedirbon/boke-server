@@ -11,7 +11,7 @@ import (
 func CheckToken(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
-		res.FailedMsg("token过期", c)
+		res.ExpireMsg("token过期", c)
 		c.Abort()
 		return
 	}
