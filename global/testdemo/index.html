@@ -1,10 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-$END$
+    <div>
+        <input id="uploader" type="file">
+        <button onclick="upload()">上传</button>
+    </div>
 </body>
+<script src="./qiniu.min.js"></script>
+<script>
+function upload() {
+    const uploader = document.getElementById("uploader")
+    const file = uploader.files[0]
+    const token = "Cpi6U0TgUuZz-cuQzWWpmOHmSDDdng02JhnivpQW:cHCpOP7pAilc6y0AiuckwbrIWqI=:eyJkZWFkbG" +
+        "luZSI6MTc0OTczNjYzMywic2NvcGUiOiJkaW5nemhpd2VuIn0="
+    const observer = {
+        next(res){
+            console.log(res)
+            // ...
+        },
+        error(err){
+            console.log(err)
+            // ...
+        },
+        complete(res){
+            console.log(res)
+            // ...
+        }
+    }
+    const config = {
+        useCdnDomain: true,
+        region: qiniu.region.z2
+    };
+    const putExtra = {
+
+    }
+    console.log(file)
+    const observable = qiniu.upload(file, "images/xxx.png", token, putExtra, config)
+    const subscription = observable.subscribe(observer) // 上传开始
+    console.log(subscription)
+}
+</script>
 </html>

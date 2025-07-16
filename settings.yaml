@@ -1,3 +1,79 @@
 system:
-  ip:
+  ip: ""
   port: 8080
+log:
+  app: logs
+  dir: logs
+db:
+  user: root
+  password: admin
+  host: 127.0.0.1
+  port: 3306
+  dbname: blogx
+  debug: false
+  source: mysql
+jwt:
+  key: jediborn
+  time: 2
+  person: jediborn
+redis:
+  addr: 127.0.0.1:6379
+  password: ""
+  db: 2
+site:
+  siteInfo:
+    title: ""
+    logo: ""
+    beian: ""
+    mode: 0
+  project:
+    title: ""
+    icon: ""
+    webPath: ""
+  seo:
+    keywords: ""
+    description: ""
+  about:
+    siteDate: ""
+    qq: ""
+    version: ""
+    wechat: ""
+    gitee: ""
+    bilibili: ""
+    github: ""
+  login:
+    qqLogin: false
+    usernamePwdLogin: false
+    emailLogin: false
+    captcha: false
+  indexRight:
+    list: []
+  article:
+    noExamine: false
+email:
+  domain: smtp.qq.com
+  port: 587
+  sendEmail: 1145480106@qq.com
+  authCode: zvovyxyvlyxviebf
+  sendNickname: 这是一封邮件
+  ssl: true
+  tls: false
+qq:
+  app_id: "1145480106"
+  app_key: '*******'
+  redirect: dwadwad
+qiNiu:
+  enable: true
+  accessKey: Cpi6U0TgUuZz-cuQzWWpmOHmSDDdng02JhnivpQW
+  secretKey: Ex1YjYZErXxDZp2mYVyhrhmjw1V6sBKevJYPZ92I
+  Bucket: dingzhiwen
+  uri: http://sxn9smmo9.hn-bkt.clouddn.com
+  region: z2
+  prefix: images
+  size: 3
+  expiry: 60
+ai:
+  enable: false
+  secretKey: dawjdhjkahjdak
+  nickname: 小丁
+  avatar: xxx/xxx/xxx
