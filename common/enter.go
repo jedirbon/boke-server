@@ -1,8 +1,8 @@
 package common
 
 type PageInfo struct {
-	PageIndex int `json:"pageIndex" from:"pageIndex"`
-	PageSize  int `json:"pageSize" from:"pageSize"`
+	PageIndex int `json:"pageIndex" form:"pageIndex"`
+	PageSize  int `json:"pageSize" form:"pageSize"`
 }
 
 type Delete struct {
@@ -10,7 +10,7 @@ type Delete struct {
 }
 
 type IDRequest struct {
-	Id []int `json:"id" from:"id"`
+	Id []int `json:"id" form:"id"`
 }
 
 type ResponseList[T any] struct {

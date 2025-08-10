@@ -54,6 +54,11 @@ func ensureFileRemoved(filePath string) error {
 	return nil
 }
 func CreateKeys() {
+	// 确保key目录存在
+	if err := os.MkdirAll("key", 0755); err != nil {
+		panic(fmt.Sprintf("创建key目录失败: %v", err))
+	}
+
 	// 生成 2048 位 RSA 密钥对
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {

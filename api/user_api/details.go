@@ -9,14 +9,14 @@ import (
 )
 
 func (UserApi) ViewDetails(c *gin.Context) {
-	val, ok := c.Get("userId")
-	if !ok {
+	val := c.Query("userId")
+	if val == "" {
 		logrus.Error("获取用户id失败")
 		res.FailedMsg("获取用户id失败", c)
 		return
 	}
-	var userDetails models.UserDetails
-	result := global.DB.Model(&models.UserModel{}).Preload("UserConfModel").Find(&userDetails, val)
+	var userDetails models.UserModel
+	result := global.DB.Find(&userDetails, val)
 	if result.Error != nil {
 		res.FailedAny(result.Error, "查询失败", c)
 		return

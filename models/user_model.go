@@ -7,8 +7,12 @@ type UserModel struct {
 	Nickname       string `gorm:"size:32" json:"nickname" form:"nickname" binding:"required"`
 	Avatar         string `gorm:"size:256" json:"avatar" form:"avatar"`
 	Abstract       string `gorm:"size:256" json:"abstract" form:"abstract"`
-	RegisterSource string `json:"registerSource" form:"registerSource"` //注册来源
-	CodeAge        int    `json:"codeAge" form:"codeAge"`               //马岭
+	RegisterSource string `json:"registerSource" form:"registerSource"`                       //注册来源
+	CodeAge        int    `json:"codeAge" form:"codeAge"`                                     //马岭
+	LikeCount      int    `json:"likeCount" form:"likeCount" gorm:"not null;default:0"`       //关注
+	FansCount      int    `json:"fansCount" form:"fansCount" gorm:"not null;default:0"`       //粉丝数
+	ArticleCount   int    `json:"articleCount" form:"articleCount" gorm:"not null;default:0"` //文章数
+	LookCount      int    `json:"lookCount" form:"lookCount" gorm:"not null;default:0"`       //总访问量
 	Password       string `gorm:"size:64" json:"-" form:"password"`
 	Email          string `gorm:"size:256" json:"email" form:"email"`
 	OpenID         string `gorm:"size:64" json:"openID" form:"openID"` //第三方登录的唯一ID
@@ -30,7 +34,7 @@ type UserDetails struct {
 	Abstract       string    `gorm:"size:256" json:"abstract" form:"abstract"`
 	RegisterSource string    `json:"registerSource" form:"registerSource"` //注册来源
 	CreatedAt      time.Time `json:"create"`
-	UserConfModel  UserConfModel
+	UserConf       UserModel
 }
 
 type UserConfModel struct {
@@ -38,9 +42,9 @@ type UserConfModel struct {
 	UserModel          UserModel  `gorm:"foreignKey:UserId" json:"-"`
 	LikeTags           []string   `gorm:"type:longtext;serializer:json" json:"likeTags"`
 	UpdateUsernameDate *time.Time `json:"UpdateUsernameDate"` //上次修改用户名时间
-	OpenCollect        bool       `json:"openCollect"`        //公开我的收藏
-	OpenFans           bool       `json:"OpenFans"`           //公开我的粉丝
-	OpenFollow         bool       `json:"OpenFollow"`         //公开我的关注
+	OpenCollect        int        `json:"openCollect"`        //公开我的收藏
+	OpenFans           int        `json:"OpenFans"`           //公开我的粉丝
+	OpenFollow         int        `json:"OpenFollow"`         //公开我的关注
 	HomeStyleId        uint       `json:"homeStyleId"`        //样式风格Id
 	Model
 }

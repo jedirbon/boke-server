@@ -6,7 +6,12 @@ import (
 	"boke-server/models"
 	"boke-server/utils/jwt"
 	"fmt"
+	"strings"
+
+	"boke-server/service/redis_service"
+
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 type UserApi struct {
@@ -86,6 +91,43 @@ func (UserApi) Login(c *gin.Context) {
 		res.FailedAny(result.Error, "账号密码错误", c)
 	}
 }
+func (UserApi) Logout(c *gin.Context) {
+	// 获取Authorization header中的token
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		res.FailedMsg("未找到token", c)
+		return
+	}
+
+	// 解析Bearer token
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		res.FailedMsg("token格式错误", c)
+		return
+	}
+
+	token := parts[1]
+
+	// 验证token是否有效
+	_, ok := jwt.ParseToken(token)
+	if !ok {
+		res.FailedMsg("token无效", c)
+		return
+	}
+
+	// 将token加入黑名单，使其失效
+	redis_service.TokenBlack(token)
+
+	// 记录退出日志（可选，这里注释掉避免未使用变量）
+	// claims, _ := jwt.ParseToken(token)
+	// userId := claims.UserInfo.UserId
+	// roleId := claims.UserInfo.RoleId
+	// log_service.RecordUserAction(userId, "logout", "用户退出登录", c.ClientIP())
+	logrus.Info("用户退出登录")
+
+	// 返回成功响应
+	res.OkMsg("退出登录成功", c)
+}
 
 // 修改用户信息
 func (UserApi) UploadUser(c *gin.Context) {
@@ -94,6 +136,14 @@ func (UserApi) UploadUser(c *gin.Context) {
 	if err != nil {
 		res.FailedMsg(err.Error(), c)
 		return
+	}
+	file, err := c.FormFile("file")
+	if file != nil {
+		if err != nil {
+			res.FailedMsg(err.Error(), c)
+		}
+		//保存头像
+		userInfo.Avatar = global.SaveAvatar(file, file.Filename, c)
 	}
 	result := global.DB.Model(&userInfo).Updates(userInfo)
 	if result.RowsAffected > 0 && result.Error == nil {

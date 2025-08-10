@@ -10,4 +10,5 @@ func UserRouter(r *gin.RouterGroup) {
 	r.POST("user/send_email", app.SendEmailView)
 	r.GET("user/details", app.ViewDetails)
 	r.PUT("user/upload", app.UploadUser)
+	r.GET("user/start", app.GetDiggArticle)
 }

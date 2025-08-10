@@ -12,6 +12,14 @@ db:
   dbname: blogx
   debug: false
   source: mysql
+slaveDB:
+  user: root
+  password: admin
+  host: 192.168.31.184
+  port: 3306
+  dbname: blogx
+  debug: false
+  source: mysql
 jwt:
   key: jediborn
   time: 2

@@ -1,6 +1,10 @@
 package utils
 
-import "net"
+import (
+	"fmt"
+	"gorm.io/gorm"
+	"net"
+)
 
 // IsPrivateIP 判断IP地址是否为内网地址
 // 参数: ip - 要检查的IP地址字符串(如 "192.168.1.1")
@@ -55,4 +59,18 @@ func InList(key string, list []string) bool {
 		}
 	}
 	return false
+}
+
+func FormatLike(key string) string {
+	return fmt.Sprintf("%%%s%%", key)
+}
+
+// 处理分页专用
+func Paginate(page, pageSize int) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		// 计算偏移量
+		offset := (page - 1) * pageSize
+		// 返回应用了Offset和Limit的DB实例
+		return db.Offset(offset).Limit(pageSize)
+	}
 }

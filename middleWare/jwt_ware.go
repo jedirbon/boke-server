@@ -2,13 +2,31 @@ package middleWare
 
 import (
 	"boke-server/common/res"
+	"boke-server/service/redis_service"
 	"boke-server/utils/jwt"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
+var filterRoute = []string{
+	"/api/article/list",
+	"/api/category/list",
+	"/api/article/details",
+	"/api/comment/list",
+	"/api/user/details",
+}
+
 func CheckToken(c *gin.Context) {
+	//如果在白名单中则直接跳过
+	for _, val := range filterRoute {
+		if val == c.Request.URL.Path {
+			c.Next()
+			return
+		}
+	}
+	fmt.Println(c.Request.URL.Path)
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		res.ExpireMsg("token过期", c)
@@ -18,6 +36,11 @@ func CheckToken(c *gin.Context) {
 	parts := strings.Split(authHeader, " ")
 	if len(parts) == 2 && parts[0] == "Bearer" {
 		token := parts[1]
+		if redis_service.FindTokenIsBlack(token) {
+			res.ExpireMsg("token过期", c)
+			c.Abort()
+			return
+		}
 		claims, ok := jwt.ParseToken(token)
 		if ok {
 			fmt.Println("**********")
@@ -29,7 +52,7 @@ func CheckToken(c *gin.Context) {
 			c.Next() //放行
 			return
 		} else {
-			res.FailedMsg("解析token失败", c)
+			res.ExpireMsg("解析token失败", c)
 			c.Abort() //中止
 		}
 	} else {
