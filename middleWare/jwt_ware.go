@@ -16,6 +16,7 @@ var filterRoute = []string{
 	"/api/article/details",
 	"/api/comment/list",
 	"/api/user/details",
+	"/api/comment/son/list",
 }
 
 func CheckToken(c *gin.Context) {

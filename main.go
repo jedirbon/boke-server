@@ -16,7 +16,7 @@ func main() {
 	core.InitLogrus()
 	//初始化数据库
 	global.DB = core.InitDB()
-	global.SlaveDB = core.InitSlave()
+	//global.SlaveDB = core.InitSlave()
 	global.Redis = core.InitRedis()
 	//迁移数据库
 	flags.Run()

@@ -29,7 +29,7 @@ func (ArticleApi) GetArticleList(c *gin.Context) {
 	fmt.Println(rq)
 	fmt.Println("*********")
 	global.DB.Model(&models.ArticleModel{}).Count(&totalCount)
-	result := global.SlaveDB.
+	result := global.DB.
 		Model(&models.ArticleModel{}).
 		Preload("UserInfo").
 		Limit(rq.PageSize).
